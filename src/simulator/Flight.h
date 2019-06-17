@@ -30,6 +30,8 @@
 #include "Common.h"
 #include <list>
 
+namespace atcsim{
+
 typedef struct {
 	Position pos;
 	float speed;
@@ -49,7 +51,9 @@ public:
 	Position getPosition() { return pos;};
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
+	float getInitBearing() { return init_bearing;};
 	float getSpeed() { return speed;};
+	void setSpeed(float tgt_speed) {speed = checkSpeedLimits(tgt_speed);}
 	float getPoints() {return points;};
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
@@ -58,10 +62,13 @@ public:
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
 
+	void setLanding(bool landing_) {landing=landing_;};
+	bool getLanding(){return landing;};
+
 private:
 	std::string id;
 	Position pos, last_pos;
-	float bearing, inclination;
+	float init_bearing, bearing, inclination;
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
@@ -69,6 +76,11 @@ private:
 	bool inStorm;
 
 	float points;
+
+	float checkSpeedLimits(float tgt_speed);
+	bool landing;	
 };
+
+};  // namespace atcsim
 
 #endif /* FLIGHT_H_ */
